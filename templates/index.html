@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Translator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div id="intro-container">
+        <h1 id="intro-text">Developed by Pavan</h1>
+    </div>
+    
+    <div id="main-content" style="display: none;">
+        <h1>Speech Translator</h1>
+        <p>Select a target language and speak!</p>
+        <select id="language-select">
+            <option value="">Select Language</option>
+            <option value="Hindi">Hindi</option>
+            <option value="Telugu">Telugu</option>
+            <option value="Kannada">Kannada</option>
+            <option value="Tamil">Tamil</option>
+            <option value="Malayalam">Malayalam</option>
+            <option value="Bengali">Bengali</option>
+            <option value="English">English</option>
+        </select>
+        <br><br>
+        <button onclick="startTranslation()">Translate Speech</button>
+        <p id="loader">Processing...</p>
+        <p id="output"></p>
+        <audio id="audio" controls style="display: none;"></audio>
+    </div>
+
+    <script>
+        function startTranslation() {
+            const language = document.getElementById('language-select').value;
+            const output = document.getElementById('output');
+            const audio = document.getElementById('audio');
+            const loader = document.getElementById('loader');
+
+            if (!language) {
+                output.textContent = "Please select a language.";
+                return;
+            }
+
+            output.textContent = "";
+            loader.style.display = 'block';
+            audio.style.display = 'none';
+
+            const formData = new FormData();
+            formData.append('target_language', language);
+
+            fetch('http://127.0.0.1:5000/translate', {
+                method: 'POST',
+                body: formData,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    loader.style.display = 'none';
+                    if (data.error) {
+                        output.textContent = `Error: ${data.error}`;
+                    } else {
+                        output.innerHTML = ` 
+                            <strong>Recognized Text:</strong> ${data.recognized_text}<br>
+                            <strong>Translated Text:</strong> ${data.translated_text}
+                        `;
+                        audio.src = data.audio_file;
+                        audio.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    loader.style.display = 'none';
+                    output.textContent = "An error occurred: " + error.message;
+                });
+        }
+
+        // After intro animation ends, display main content
+        window.onload = function () {
+            setTimeout(() => {
+                document.getElementById('intro-container').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            }, 4000); // After 4 seconds of intro animation
+        };
+    </script>
+</body>
+</html>

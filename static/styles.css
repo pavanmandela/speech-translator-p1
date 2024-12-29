@@ -1,0 +1,81 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+    overflow: hidden;
+}
+
+/* Intro Animation Container */
+#intro-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh; /* Half of the screen height */
+    background-color: #34495e; /* Dark background for intro */
+    width: 100%;
+}
+
+/* Intro Text Styling and Animation */
+#intro-text {
+    font-size: 4em; /* Larger text */
+    color: white;
+    animation: fadeInUp 2s ease-out, bounceIn 2s ease-out;
+}
+
+/* Main Content Styling */
+#main-content {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Button and Select Styling */
+select, button {
+    padding: 10px;
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+/* Loader Styling */
+#loader {
+    display: none;
+    font-size: 18px;
+    color: blue;
+}
+
+/* Audio Player Styling */
+audio {
+    margin-top: 20px;
+}
+
+/* Keyframes for the Intro Animation */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
